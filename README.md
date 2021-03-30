@@ -1,6 +1,6 @@
 # A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE
 
-This repository is the official implementation of[A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE](https://arxiv.org/). 
+This repository is the official implementation of [A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE](https://arxiv.org/). 
 
 >📋  Our theoretical approach leads to a new training algorithm for NeurODE which consists of a shooting method to solve the optimaliy conditions, namely a forward equation, a backward one and then an equation for the update of the control parameter, i.e. the weights of the layers of the network.
 
