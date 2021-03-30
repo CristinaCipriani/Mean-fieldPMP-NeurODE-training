@@ -27,7 +27,7 @@ def plot_loss_fct(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_rig
     
     Z_all = initial_distribution(y_left, y_right, N, mu_0, d, R, mid_point, center_left, center_right)
         
-    theta_domain = np.linspace(-30,30, 1001)
+    theta_domain = np.linspace(-5,5, 1001)
     J_domain = np.zeros(1001) 
     
     for j in range(0,theta_domain.shape[0]) :
@@ -57,11 +57,6 @@ def plot_loss_fct(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_rig
     plt.title("Plot of the points moving over time")
     plt.show()
     
-    err_theta = np.abs( np.mean(my_sol) - theta_domain[np.where(J_domain == J_domain.min())] )
-    err_loss = np.abs( J_interp(np.mean(my_sol)) - np.min(J_domain) )
-    print("The error between the optimal theta and ours is %s" %err_theta)
-    print("which corresponds to an error in the loss function of %s" %err_loss)
-    
 def loss_comparison_Lambda(ax1, ax2, ax3, N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, mid_point, F, Lambda, theta_limits, my_sol, points_movement):
     Nt = int(round(T/float(dt)))
     
@@ -80,11 +75,11 @@ def loss_comparison_Lambda(ax1, ax2, ax3, N, d, T, dt, R, mu_0, center_left, cen
         J1_domain[j] = J(theta_extended,Z_all, N, F, mid_point, y_left, y_right, dt, Lambda = 1)
         J2_domain[j] = J(theta_extended,Z_all, N, F, mid_point, y_left, y_right, dt, Lambda = 0.001)
 
-    ax1.plot(theta_domain,J1_domain,'r', label="Lambda = 1")
-    J1_interp = interpolate.BSpline(theta_domain, J1_domain, k=1)
+    #ax1.plot(theta_domain,J1_domain,'r', label="Lambda = 1")
+    #J1_interp = interpolate.BSpline(theta_domain, J1_domain, k=1)
     ax1.plot(theta_domain,J2_domain,'g', label="Lambda = 0.001")
     J2_interp = interpolate.BSpline(theta_domain, J2_domain, k=1)
-    ax1.scatter(theta_domain[np.argmin(J1_domain)], J1_interp(theta_domain[np.argmin(J1_domain)]))
+    #ax1.scatter(theta_domain[np.argmin(J1_domain)], J1_interp(theta_domain[np.argmin(J1_domain)]))
     ax1.scatter(theta_domain[np.argmin(J2_domain)], J2_interp(theta_domain[np.argmin(J2_domain)]))
     ax1.legend()
     
@@ -130,8 +125,8 @@ def loss_comparison_dt(ax1, ax2, ax3, N, d, T, dt, R, mu_0, center_left, center_
         Nt2 = int(round(T/float(dt2)))
         theta_extended1 = theta_domain[j] * np.ones((Nt1-1,d))
         theta_extended2 = theta_domain[j] * np.ones((Nt2-1,d))
-        J1_domain[j] = J(theta_extended1,Z_all, N, F, mid_point, y_left, y_right, dt = dt1, Lambda = Lambda)
-        J2_domain[j] = J(theta_extended2,Z_all, N, F, mid_point, y_left, y_right, dt = dt2, Lambda = Lambda)
+        J1_domain[j] = J(theta_extended1,Z_all, N, F, mid_point, y_left, y_right, dt = dt1, Lambda = 1)
+        J2_domain[j] = J(theta_extended2,Z_all, N, F, mid_point, y_left, y_right, dt = dt2, Lambda = 1)
     
     #plot of the loss function
     ax1.plot(theta_domain,J1_domain,'r', label="dt = 0.1")
@@ -164,25 +159,3 @@ def loss_comparison_dt(ax1, ax2, ax3, N, d, T, dt, R, mu_0, center_left, center_
         ax3.legend()
     
     return 
-
-def error_fct(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, mid_point, F, Lambda, my_sol):
-    Nt = int(round(T/float(dt)))
-    
-    Z_all = initial_distribution(y_left, y_right, N, mu_0, d, R, mid_point, center_left, center_right)
-        
-    theta_domain = np.linspace(-5,5, 1001)
-    J_domain = np.zeros(1001) 
-    
-    for j in range(0,theta_domain.shape[0]) :
-        theta_extended = theta_domain[j] * np.ones((Nt-1,d)) 
-        J_domain[j] = J(theta_extended,Z_all, N, F, mid_point, y_left, y_right, dt, Lambda)
-    
-    J_interp = interpolate.BSpline(theta_domain, J_domain, k=1)
-
-        
-    err_theta = np.abs( np.mean(my_sol) - theta_domain[np.where(J_domain == J_domain.min())] )**2
-    err_loss = np.abs( J_interp(np.mean(my_sol)) - np.min(J_domain) )**2
-    print("The error between the optimal theta and ours is %s" %err_theta)
-    print("which corresponds to an error in the loss function of %s" %err_loss)
-    
-    return err_theta, err_loss
