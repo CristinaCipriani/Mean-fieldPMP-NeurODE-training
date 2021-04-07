@@ -6,7 +6,7 @@ from IPython import display
 from scipy import stats
 from scipy import interpolate
 from sklearn.neighbors import KernelDensity
-from modules.training import initial_distribution, move_forward
+from modules.training_1D import initial_distribution, move_forward
 
 def J(theta, Z_all, N, F, mid_point, y_left, y_right, dt, Lambda):
     T = 1
