@@ -8,16 +8,16 @@ from IPython import display
 from scipy import stats
 from scipy import interpolate
 from sklearn.neighbors import KernelDensity
-from modules.training_1D import MFOC as MFOC_nobias
+from modules.training_nobias_1D import MFOC as MFOC_nobias
 from modules.training_bias_1D import MFOC as MFOC_bias
 
 parser = argparse.ArgumentParser(description='Description of all the parameters below')
-parser.add_argument("--bias", default = False,
-                    help="This decides if the activation function contains a bias or not")
 parser.add_argument("--mu_0",
                     choices=["bigaussian", "gaussian"],
                     required=True, type=str,
                     help="This decides if the initial distirbution mu_0 is a bimodal or unimodal gaussian")
+parser.add_argument("--bias", default = False,
+                                        help="This decides if the activation function contains a bias or not")
 parser.add_argument("--dt", default=0.1, help="This is time-discretization dt")
 parser.add_argument("--Lambda", default=0.1, help="This is regularization parameter lambda")
 parser.add_argument("--iterations", default=10, help="This is the number of outer iterations (of the shooting method)")
@@ -71,7 +71,7 @@ if bias == False:
     # Running the algorithm
     theta, theta_trace = MFOC_nobias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
 
-    # Plotting the evolution of the theta and saving it in the current directory
+    # Plotting the evolution of theta and saving it in the current directory
     for k in range(0,theta_trace.shape[0]):
         plt.scatter(range(Nt-1), theta_trace[k,:], label="Iteration %s" %k)
         plt.plot(range(Nt-1), theta_trace[k,:])
