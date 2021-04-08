@@ -8,9 +8,8 @@ from IPython import display
 from scipy import stats
 from scipy import interpolate
 from sklearn.neighbors import KernelDensity
-from modules.training_1D import MFOC
-from modules.analysis_1D import plot_loss_fct
-from modules.analysis_1D import loss_comparison_Lambda, loss_comparison_dt
+from modules.training_1D import MFOC as MFOC_nobias
+from modules.training_bias_1D import MFOC as MFOC_bias
 
 parser = argparse.ArgumentParser(description='Description of all the parameters below')
 parser.add_argument("--bias", default = False,
@@ -64,12 +63,46 @@ def F_bias(x, theta):
     return np.tanh(theta[:,0]*x + theta[:,1])
 
 if bias == False:
+    # Setting the parameters needed for the case without bias
     theta = np.ones((Nt-1,d))
     F = F_nobias
     Lambda = lbd
+
+    # Running the algorithm
+    theta, theta_trace = MFOC_nobias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
+
+    # Plotting the evolution of the theta and saving it in the current directory
+    for k in range(0,theta_trace.shape[0]):
+        plt.scatter(range(Nt-1), theta_trace[k,:], label="Iteration %s" %k)
+        plt.plot(range(Nt-1), theta_trace[k,:])
+    plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.title("Evolution of theta over time")
+    plt.xlabel("time")
+    plt.savefig("theta_evolution.png")
+
 else:
+    # Setting the parameters needed for the case with bias
     theta = np.ones((Nt-1,d,2))
     F = F_bias
     Lambda = [lbd,1]
 
-print("Prova a stampare lambda %s" %Lambda)
+    # Running the algorithm
+    theta, theta_trace = MFOC_bias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
+
+    # Plotting the evolution of W and saving it in the current directory
+    for k in range(0,theta_trace.shape[0]):
+        plt.scatter(range(Nt-1), theta_trace[k,:,0], label="Iteration %s" %k)
+        plt.plot(range(Nt-1), theta_trace[k,:,0])
+    plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.title("Evolution of W over time")
+    plt.xlabel("time")
+    plt.savefig("W_evolution.png")
+
+    # Plotting the evolution of tau and saving it in the current directory
+    for k in range(0,theta_trace.shape[0]):
+        plt.scatter(range(Nt-1), theta_trace[k,:,1], label="Iteration %s" %k)
+        plt.plot(range(Nt-1), theta_trace[k,:,1])
+    plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.title("Evolution of tau over time")
+    plt.xlabel("time")
+    plt.savefig("tau_evolution.png")

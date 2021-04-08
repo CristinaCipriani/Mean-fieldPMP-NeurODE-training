@@ -49,26 +49,13 @@ def move_forward(dt, Nt, N_particles, Z, F, theta, mid_point, y_left, y_right, x
     g = np.zeros(shape=(Nt,2*N_particles,d))
     g[0,:] = y_right * np.sign(Z[:,0][:, np.newaxis])
 
-    x_new = np.linspace(xmin, xmax, 2*N_particles)
-    mu = np.zeros((Nt,2*N_particles))
-    X = Z[:,0][:, np.newaxis]
-    kde = KernelDensity(kernel='gaussian', bandwidth=0.2).fit(X)
-    log_dens = kde.score_samples(x_new[:, np.newaxis])
-    mu[0,:] = np.exp(log_dens)
-
     for n in range(0, Nt-1):
         Z_trace[n+1,:,:d] = Z_trace[n,:,:d] + dt * F(Z_trace[n,:,:d], theta[n, :]) #movement forward of x
         Z_trace[n+1,:,d:] = Z_trace[n,:,d:]                                        #movemente forward of y
 
         g[n+1,:] = y_right * np.sign(Z_trace[n+1,:,:d])        # vector that saves the actual sign of the particles
 
-        X = Z_trace[n+1,:,0][:, np.newaxis]
-        kde = KernelDensity(kernel='gaussian', bandwidth=0.2).fit(X)
-        log_dens = kde.score_samples(x_new[:, np.newaxis])
-        mu[n,:] = np.exp(log_dens)
-
-
-    return Z_trace, g, mu
+    return Z_trace, g
 
 def move_backward(x, y, xmin, xmax, Nx, Ny, dt, Nt, F, theta, diff):
     dx = x[1] - x[0]
@@ -89,6 +76,7 @@ def move_backward(x, y, xmin, xmax, Nx, Ny, dt, Nt, F, theta, diff):
 
     for n in range(0, Nt-1):
         if diff == 'fu':
+          # Boundary conditions
           u[0,:] = (u_n[0,:]
                       - (-F(x_b[0], theta[Nt-2-n,:]))*dt/dx * (3/2*u_n[0,:] - 2*u_n[1,:] + 1/2*u_n[2,:])
                       * 0.5*(1+np.sign(-F(x_b[0], theta[Nt-2-n,:])))
@@ -102,7 +90,7 @@ def move_backward(x, y, xmin, xmax, Nx, Ny, dt, Nt, F, theta, diff):
                          - (-F(x_b[Nx+1], theta[Nt-2-n,:]))*dt/dx * (+2*u_n[Nx,:] - 3/2*u_n[Nx+1,:] -1/2*u_n[Nx-1,:])
                              * 0.5*(1-np.sign(-F(x_b[Nx], theta[Nt-2-n,:])))
                         )
-
+          # Internal points
           for j in range(0,Ny+2):
             u[1:Nx+1, j] = ( u_n[1:Nx+1,j]
                                - (-F(x_b[1:Nx+1], theta[Nt-2-n,:]))*dt/dx * (-u_n[1:Nx+1,j] + u_n[2:Nx+2,j])
@@ -110,93 +98,6 @@ def move_backward(x, y, xmin, xmax, Nx, Ny, dt, Nt, F, theta, diff):
                                - (-F(x_b[0:Nx], theta[Nt-2-n,:]))*dt/dx * (-u_n[0:Nx,j] + u_n[1:Nx+1,j])
                                  * 0.5*(1+np.sign(-F(x_b[1:Nx+1], theta[Nt-2-n,:])))
                                )
-        if diff == 'fu2':
-          u[0,:] = (u_n[0,:]
-                      - F(x_b[0], theta[Nt-2-n,:])*dt/dx * (-3/2*u_n[0,:] + 2*u_n[1,:] - 1/2*u_n[2,:]) * 0.5*(1+np.sign(-F(x_b[0], theta[Nt-2-n,:])))
-                      - F(x_b[0],theta[Nt-2-n,:])*dt/dx * (-u_n[1,:] + u_n[0,:] )
-                      * 0.5*(1-np.sign(-F(x_b[0], theta[Nt-2-n,:])))
-                     )
-
-          u[Nx+1,:] = (u_n[Nx+1,:]
-                         - F(x_b[Nx],theta[Nt-2-n,:])*dt/dx * (u_n[Nx,:]-u_n[Nx+1,:])
-                             * 0.5*(1+np.sign(-F(x_b[Nx+1], theta[Nt-2-n,:])))
-                         - F(x_b[Nx+1], theta[Nt-2-n,:])*dt/dx * (-2*u_n[Nx,:] + 3/2*u_n[Nx+1,:] +1/2*u_n[Nx-1,:])
-                             * 0.5*(1-np.sign(-F(x_b[Nx], theta[Nt-2-n,:])))
-                        )
-
-          for j in range(0,Ny+2):
-            u[1:Nx+1, j] = ( u_n[1:Nx+1,j]
-                               - F(x_b[1:Nx+1], theta[Nt-2-n,:])*dt/dx * (u_n[1:Nx+1,j] - u_n[2:Nx+2,j])
-                                 * 0.5*(1-np.sign(-F(x_b[0:Nx], theta[Nt-2-n,:])))
-                               - F(x_b[0:Nx], theta[Nt-2-n,:])*dt/dx * (u_n[0:Nx,j] - u_n[1:Nx+1,j])
-                                 * 0.5*(1+np.sign(-F(x_b[1:Nx+1], theta[Nt-2-n,:])))
-                               )
-        if diff == 'fu_Ftilda':
-          u[0,:] = (u_n[0,:]
-                      + F(x_b[0], theta[Nt-2-n,:])*dt/dx * (-3/2*u_n[0,:] + 2*u_n[1,:] - 1/2*u_n[2,:]) * 0.5*(1+np.sign(F(x_b[0], theta[Nt-2-n,:])))
-                      + F(x_b[0],theta[Nt-2-n,:])*dt/dx * (-u_n[1,:] + u_n[0,:] )
-                      * 0.5*(1-np.sign(F(x_b[0], theta[Nt-2-n,:])))
-                     )
-
-          u[Nx+1,:] = (u_n[Nx+1,:]
-                         + F(x_b[Nx],theta[Nt-2-n,:])*dt/dx * (u_n[Nx,:]-u_n[Nx+1,:])
-                             * 0.5*(1+np.sign(F(x_b[Nx+1], theta[Nt-2-n,:])))
-                         + F(x_b[Nx+1], theta[Nt-2-n,:])*dt/dx * (-2*u_n[Nx,:] + 3/2*u_n[Nx+1,:] +1/2*u_n[Nx-1,:])
-                             * 0.5*(1-np.sign(F(x_b[Nx], theta[Nt-2-n,:])))
-                        )
-
-          for j in range(0,Ny+2):
-            u[1:Nx+1, j] = ( u_n[1:Nx+1,j]
-                               + F(x_b[1:Nx+1], theta[Nt-2-n,:])*dt/dx * (u_n[1:Nx+1,j] - u_n[2:Nx+2,j])
-                                 * 0.5*(1-np.sign(F(x_b[0:Nx], theta[Nt-2-n,:])))
-                               + F(x_b[0:Nx], theta[Nt-2-n,:])*dt/dx * (u_n[0:Nx,j] - u_n[1:Nx+1,j])
-                                 * 0.5*(1+np.sign(F(x_b[1:Nx+1], theta[Nt-2-n,:])))
-                               )
-        if diff == 'fu_old':
-            '''
-            # Boundary conditions
-            u[0,:] = u_n[0,:] + F(x_b[0],theta[n,:])*dt/dx * (2*u_n[1,:] -3/2*u_n[0,:] -1/2*u_n[2,:])
-            u[Nx+1,:] = u_n[Nx+1,:] + F(x_b[Nx+1],theta[n,:])*dt/dx * (3/2*u_n[Nx+1,:]- 2*u_n[Nx,:] +1/2*u_n[Nx-1,:])
-
-            for j in range(0,Ny+2):
-                u[1:Nx+1, j] = ( u_n[1:Nx+1,j]
-                               + F(x_b[1:Nx+1], theta[Nt-2-n,:])*dt/dx * (u_n[1:Nx+1,j] - u_n[0:Nx,j])
-                                 * 0.5*(1+np.sign(F(x_b[1:Nx+1], theta[Nt-2-n,:])))
-                               + F(x_b[1:Nx+1], theta[Nt-2-n,:])*dt/dx * (u_n[2:Nx+2,j] - u_n[1:Nx+1,j])
-                                 * 0.5*(1-np.sign(F(x_b[1:Nx+1], theta[Nt-2-n,:])))
-                               )
-            '''
-            u[0,:] = (u_n[0,:]
-                      + F(x_b[0], theta[Nt-2-n,:])*dt/dx * (3/2*u_n[0,:] - 2*u_n[1,:] + 1/2*u_n[2,:]) * 0.5*(1+np.sign(F(x_b[0], theta[Nt-2-n,:])))
-                      + F(x_b[0],theta[Nt-2-n,:])*dt/dx * (-u_n[1,:] + u_n[0,:] )
-                      * 0.5*(1-np.sign(F(x_b[0], theta[Nt-2-n,:])))
-                     )
-
-            u[Nx+1,:] = (u_n[Nx+1,:]
-                         + F(x_b[Nx],theta[Nt-2-n,:])*dt/dx * (u_n[Nx,:]-u_n[Nx+1,:])
-                             * 0.5*(1+np.sign(F(x_b[Nx+1], theta[Nt-2-n,:])))
-                         + F(x_b[Nx+1], theta[Nt-2-n,:])*dt/dx * (2*u_n[Nx,:] - 3/2*u_n[Nx+1,:] -1/2*u_n[Nx-1,:])
-                             * 0.5*(1-np.sign(F(x_b[Nx], theta[Nt-2-n,:])))
-                        )
-
-            for j in range(0,Ny+2):
-                u[1:Nx+1, j] = ( u_n[1:Nx+1,j]
-                               + F(x_b[1:Nx+1], theta[Nt-2-n,:])*dt/dx * (u_n[1:Nx+1,j] - u_n[2:Nx+2,j])
-                                 * 0.5*(1-np.sign(F(x_b[0:Nx], theta[Nt-2-n,:])))
-                               + F(x_b[0:Nx], theta[Nt-2-n,:])*dt/dx * (u_n[0:Nx,j] - u_n[1:Nx+1,j])
-                                 * 0.5*(1+np.sign(F(x_b[1:Nx+1], theta[Nt-2-n,:])))
-                               )
-        if diff == 'lw':
-            # Boundary conditions
-            u[0,:] = u_n[0,:] - F(x_b[0],theta[n,:])*(-dt)/dx * (2*u_n[1,:] -3/2*u_n[0,:] -1/2*u_n[2,:])
-            u[Nx+1,:] = u_n[Nx+1,:] -F(x_b[Nx+1],theta[n,:])*(-dt)/dx * (3/2*u_n[Nx+1,:]- 2*u_n[Nx,:] +1/2*u_n[Nx-1,:])
-
-            for j in range(0,Ny+2):
-                u[1:Nx+1,j] = (u_n[1:Nx+1,j]
-                              - (F(x_b[1:Nx+1], theta[n,:])*(-dt))/(2*dx) * (u_n[2:Nx+2,j]- u_n[0:Nx,j])
-                              + (F(x_b[1:Nx+1], theta[n,:])*(-dt))**2/(2*dx**2) * (u_n[2:Nx+2,j] -2*u_n[1:Nx+1,j] + u_n[0:Nx,j])
-                              )
-
 
         u_all[Nt-2-n,:,:] = u[1:-1,1:-1]
         # Switch variables before next step
@@ -233,10 +134,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, F, theta, Lambda, x , dx , dt
             axs[n].plot(theta_domain, f_domain)
             axs[n].plot(theta_domain, np.zeros(1001), 'r')
 
-        #sol = optimize.root(root_function_th, theta[n,:], args=(Z_trace, g, spl_neg, spl_pos, F, Lambda, Nt, d, n))
-        #sol = optimize.newton(root_function_th, theta[n,:], args=(Z_trace, g, spl_neg, spl_pos, F, Lambda, Nt, d, n),maxiter=500)
         sol = optimize.brenth(root_function_th, -200, 200, args=(Z_trace, g, spl_neg, spl_pos, F, Lambda, Nt, d, n))
-        #sol = optimize.bisect(root_function_th, -20, 20, args=(Z_trace, g, spl_neg, spl_pos, F, Lambda, Nt, d, n))
         theta_new[n,:] = sol
 
         if dynamics_plots:
@@ -247,71 +145,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, F, theta, Lambda, x , dx , dt
         f_value[n], _, c = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta_ext, n , False)
         count += c
 
-        '''
-        for tt in range(len(theta_domain)):
-            theta_ext = theta_domain[tt] * np.ones((Nt-1,d))
-            f_domain[tt] = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta_ext, n , False)[0]
-            f_prime_domain[tt] = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta_ext, n , False)[1]
 
-        #f_interp = interpolate.BSpline(theta_domain, f_domain, k=1)
-        f_interp = interpolate.BSpline(theta_domain, f_domain, k=2)
-        f_prime_interp = interpolate.BSpline(theta_domain, f_prime_domain, k=1)
-        if dynamics_plots:
-            axs[n].plot(theta_domain,f_domain,'r') # or here .scatter()
-            axs[n].plot(theta_domain, np.zeros(1001), 'b')
-            axs[n].plot(theta_domain, f_interp(theta_domain), 'g')
-
-        # Working ones with or without f_prime
-        #root = optimize.root(f_interp, theta[n,:], jac = f_prime_interp)   #root is used for multidimensional root finding
-        #root = optimize.root(f_interp, theta[n,:])
-        #sol = root.x
-
-        # Trials
-        sol = optimize.newton(f_interp, theta[n,:])
-        #root = optimize.newton(f_interp, theta[n,:], fprime=f_prime_interp)
-        #sol = root.root
-        #itr = root.iterations
-        #sol = optimize.newton(f, theta[n,:], args=(Z_trace, g, spl_neg, spl_pos, F, Lambda, n, ))
-
-        if dynamics_plots:
-            axs[n].scatter(sol, f_interp(sol))
-            #axs[n].set_title("Solution "+ str(np.around(sol,2)) +" after " + str(itr)+ " iterations" )
-        theta_new[n,:] = sol
-
-        #Updating f_value and count
-        theta_ext = sol * np.ones((Nt-1,d))
-        f_value[n], _, c = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta_ext, n , False)
-        count += c
-
-        # Finding the root
-        itr = 0
-        f = 7
-
-        while np.abs(f) > 0.00000001 and itr < 5000:
-            if itr == 0 :
-                f = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta, n, False)[0]  #if you want to print put this one to True
-                conv = f - 2*Lambda*theta[n,:]
-                #print("For n= %s, f_0 has value %s" %(n,conv))  #and this one tooo
-            else:
-                f = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta, n, False)[0]
-            f_prime = root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta, n, False)[1]
-            theta_new[n,:] = theta[n,:] - f_prime*f/np.abs(f_prime)**2
-            theta[n,:] = theta_new[n,:]
-            if dynamics_plots:
-                plt.scatter(theta[n,:], f_interp(theta[n,:]))
-            itr += 1
-
-        if dynamics_plots:
-            axs[n].scatter(theta[n,:], f_interp(theta[n,:]))
-            axs[n].set_title("Solution "+ str(np.around(theta[n,:],2)) +" after " + str(itr)+ " iterations" )
-
-
-        count = 7000
-        #f_value[n] = f_interp(sol)
-        f_value[n] = f
-        f_0 = 0
-        f_prime_0 = 0
-        '''
     print("With a mean accuracy of %s, for each time step, theta has values:" %np.mean(f_value))
     theta_r = np.around(theta_new, 3)
     print (*theta_r, sep='  ')
@@ -336,7 +170,6 @@ def root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta, n, printy):
 
     for i in range(0,N_particles):
         x_i = Z_trace[n,i,0]
-        #x_i = np.random.normal(Z_trace[n,i,0],0.1)     #this is if I sample the particle from a Gaussian (in the integral)
         if Z_trace[n,i,1] == g[n,i] and x_i > 0 :
             f_0 += spl_pos(x_i, nu=1) * (1-np.tanh(theta[n,:]*x_i)**2) * x_i
             f_prime_0 += spl_pos(x_i, nu=1) * (1-np.tanh(theta[n,:]*x_i)**2) * np.tanh(theta[n,:]*x_i) * x_i**2
@@ -378,7 +211,6 @@ def root_function_th(theta_n, Z_trace, g, spl_neg, spl_pos, F, Lambda, Nt, d, n)
 
     for i in range(0,N_particles):
         x_i = Z_trace[n,i,0]
-        #x_i = np.random.normal(Z_trace[n,i,0],0.1)     #this is if I sample the particle from a Gaussian (in the integral)
         if Z_trace[n,i,1] == g[n,i] and x_i >= 0 :
             f_0 += spl_pos(x_i, nu=1) * (1-np.tanh(theta[n,:]*x_i)**2) * x_i
 
@@ -408,23 +240,20 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
     else:
         dynamics_plots = True
 
+    # Creating the initial distribution according to the user's choice
     Z_all = initial_distribution(y_left, y_right, N, mu_0, d, R, mid_point, center_left, center_right)
-    print(Z_all.shape)
 
     Nt = int(round(T/float(dt)))
     counts = np.zeros(num_iterations)
     thetas = np.zeros((num_iterations+1, Nt-1))
     thetas[0,:] = theta.T
 
-    mu = np.zeros((num_iterations, Nt, 2*N))
-    print(mu.shape)
-
     for k in range(0,num_iterations):
         print(" --> ITERATION %s" %(k+1))
 
         # Resolution of the forward equation
         print("Moving the particles forward...")
-        Z_trace, g, mu[k,:,:] = move_forward(dt, Nt, N, Z_all, F, theta, mid_point, y_left, y_right, xmin, xmax)
+        Z_trace, g = move_forward(dt, Nt, N, Z_all, F, theta, mid_point, y_left, y_right, xmin, xmax)
 
         # Plot of the forward dynamics
         if dynamics_plots:
@@ -461,12 +290,8 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
             x_new = np.linspace(xmin+dx*20, xmax-dx*20, 200)
             x_new = np.linspace(-2.5, 2.5,200)
             for n in range(Nt-1):
-                #axs[0,Nt-2-n].scatter(x[20:-20],psi_neg[Nt-1-n,:])
-                #axs[1,Nt-2-n].scatter(x[20:-20],psi_pos[Nt-1-n,:])
                 spl_n = interpolate.BSpline(x[20:-20],psi_neg[Nt-1-n,:,],k=2)
                 spl_p = interpolate.BSpline(x[20:-20],psi_pos[Nt-1-n,:],k=2)
-                #axs[0,Nt-2-n].plot(x_new, spl_n(x_new),'r')
-                #axs[1,Nt-2-n].plot(x_new, spl_p(x_new),'r')
                 axs[0,Nt-2-n].plot(x_new, spl_n(x_new,nu=1),'g')
                 axs[1,Nt-2-n].plot(x_new, spl_p(x_new,nu=1),'g')
             fig.tight_layout()
@@ -479,7 +304,7 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
         thetas[k+1,:] = theta.T
 
     plt.figure()
-    Z_trace, g, _ = move_forward(dt, Nt, N, Z_all, F, thetas[-1,:].reshape(thetas.shape[1],1), mid_point, y_left, y_right, xmin, xmax)
+    Z_trace, g= move_forward(dt, Nt, N, Z_all, F, thetas[-1,:].reshape(thetas.shape[1],1), mid_point, y_left, y_right, xmin, xmax)
     plt.scatter(Z_trace[0,:, 0], np.zeros(2*N),c='red',label='Moving points')
     plt.scatter(Z_trace[0,:, 1], np.zeros(2*N),c='green',label='Labels')
     for n in range(1,Nt-1):
@@ -487,6 +312,7 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
         plt.scatter(Z_trace[n,:, 1], n*dt*np.ones(2*N),c='green')
     plt.legend()
     plt.title("Plot of the points moving over time")
+    plt.savefig("Particles_movement.png")
     plt.show()
 
     print("The loss fuction has value:")
@@ -495,4 +321,4 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
     print("The number of sign switches for each iteration is: ")
     print(counts)
 
-    return theta, thetas, mu
+    return theta, thetas
