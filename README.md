@@ -22,7 +22,7 @@ python monodimensional.py --mu_0 bigaussian -- bias True --lambda 0.1 --dt 0.1 -
 
 The code automatically save two images in .png format, one is the one below that represents the movement of the particles, and the other one contains the evolution of the control parameter in time.
 
-![alt text](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/image.jpg?raw=true)
+![alt text](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.png?raw=true)
 
 | Model name         | Top 1 Accuracy  | Top 5 Accuracy |
 | ------------------ |---------------- | -------------- |
