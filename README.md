@@ -10,10 +10,15 @@ This implementation makes use of standard Python packages such as numpy, scipy, 
 
 ## Training
 
-The algorithm can be trained by running this command:
+In the monodimensional case, the algorithm can be trained by running this command:
 
 ```train
 python monodimensional.py --mu_0 bigaussian -- bias True --lambda 0.1 --dt 0.1 --iterations 8
+```
+While in the bidimensional case, the command to run is the following:
+
+```train
+python bidimensional.py --mu_0 bigaussian -- bias True --lambda 0.1 --dt 0.1 --iterations 8
 ```
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
