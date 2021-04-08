@@ -13,23 +13,16 @@ This implementation makes use of standard Python packages such as numpy, scipy, 
 The algorithm can be trained by running this command:
 
 ```train
-python train.py --alpha 10 --beta 20
+python monodimensional.py --mu_0 bigaussian -- bias True --lambda 0.1 --dt 0.1 --iterations 8
 ```
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
-## Evaluation
-
-To evaluate the model , run:
-
-```eval
-python eval.py 
-```
-
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
-
 ## Results
 
+The code automatically save two images in .png format, one is the one below that represents the movement of the particles, and the other one contains the evolution of the control parameter in time.
+
+![alt text](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/image.jpg?raw=true)
 
 | Model name         | Top 1 Accuracy  | Top 5 Accuracy |
 | ------------------ |---------------- | -------------- |
@@ -40,4 +33,4 @@ python eval.py
 
 ## Citing
 
->📋 To cite our paper, use the following:
+>📋 To cite the paper, use the following:
