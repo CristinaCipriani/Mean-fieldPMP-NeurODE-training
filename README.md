@@ -5,10 +5,10 @@ This repository is the official implementation of [A Measure Theoretical Approac
 >📋  Our theoretical approach leads to a training algorithm for NeurODE which consists of a shooting method to solve the optimality conditions, namely a forward equation, a backward one, and then an equation for the update of the control parameter, i.e. the weights of the layers of the network.
 
 The authors are the following:
-* Benoît Bonnet (Institut de Mathématiques de Jussieu – Paris Rive Gauche)
-* Cristina Cipriani (Techincal University of Munich)
-* Massimo Fornasier (Technical University of Munich)
-* Hui Huang (University of Calgary)
+* Benoît Bonnet (Institut de Mathématiques de Jussieu – Paris Rive Gauche, Paris, France) ?
+* Cristina Cipriani (Technical University Munich, Department of Mathematics & Munich Data Science Institute, Munich, Germany) 
+* Massimo Fornasier (Technical University Munich, Department of Mathematics & Munich Data Science Institute, Munich, Germany)
+* Hui Huang (University of Calgary, Department of Mathematics and Statistics, Calgary, Canada)
 
 ## Requirements
 
