@@ -8,7 +8,6 @@ from scipy import interpolate
 from scipy import optimize
 from sklearn.neighbors import KernelDensity
 
-#Functions
 def trunc_gaussian(shape, R):
     X = np.random.normal(size = shape)
     for i in range(shape[0]):
@@ -41,6 +40,7 @@ def initial_distribution(y_left, y_right, N, mu_0, d, R, mid_point, center_left,
     return Z_all
 
 def move_forward(dt, Nt, N_particles, Z, F, theta, mid_point, y_left, y_right, xmin, xmax):
+    # Resolution of the forward equation
     T, d  = theta.shape
 
     Z_trace = np.zeros(shape=(Nt,2*N_particles,2*d))
@@ -58,6 +58,7 @@ def move_forward(dt, Nt, N_particles, Z, F, theta, mid_point, y_left, y_right, x
     return Z_trace, g
 
 def move_backward(x, y, xmin, xmax, Nx, Ny, dt, Nt, F, theta, diff):
+    # Resolution of the backward equation
     dx = x[1] - x[0]
     dy = y[1] - y[0]
 
@@ -107,6 +108,7 @@ def move_backward(x, y, xmin, xmax, Nx, Ny, dt, Nt, F, theta, diff):
 
 
 def parameter_update(Z_trace, g, psi_pos, psi_neg, F, theta, Lambda, x , dx , dt, Nx, Nt, mid_point, dynamics_plots):
+    # Resolution of equation for the update of the parameter
     d = 1
     theta_new = np.zeros((Nt-1,d))
     f_value = np.zeros(Nt-1)
@@ -146,7 +148,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, F, theta, Lambda, x , dx , dt
         count += c
 
 
-    print("With a mean accuracy of %s, for each time step, theta has values:" %np.mean(f_value))
+    print("With a mean accuracy of %s, for each time step, theta has values:" %np.around(np.mean(f_value),3))
     theta_r = np.around(theta_new, 3)
     print (*theta_r, sep='  ')
     if dynamics_plots:
@@ -292,8 +294,8 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
             for n in range(Nt-1):
                 spl_n = interpolate.BSpline(x[20:-20],psi_neg[Nt-1-n,:,],k=2)
                 spl_p = interpolate.BSpline(x[20:-20],psi_pos[Nt-1-n,:],k=2)
-                axs[0,Nt-2-n].plot(x_new, spl_n(x_new,nu=1),'g')
-                axs[1,Nt-2-n].plot(x_new, spl_p(x_new,nu=1),'g')
+                axs[0,Nt-2-n].plot(x_new, spl_n(x_new),'g')
+                axs[1,Nt-2-n].plot(x_new, spl_p(x_new),'g')
             fig.tight_layout()
             plt.show()
 

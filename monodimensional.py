@@ -29,6 +29,10 @@ dt = args.dt
 lbd = args.Lambda
 num_iterations = args.iterations
 
+# Setting the right format
+dt = np.float(dt)
+lbd = np.float(lbd)
+num_iterations = np.int(num_iterations)
 
 # Other parameters
 N_points = 100
@@ -38,7 +42,7 @@ Nt = int(round(T/float(dt)))
 print("dt is %s, hence the networks has %s layers" %(dt, Nt))
 xmin = -7
 xmax = 7
-grid_points = 14
+grid_points = 141
 
 #Initial distribution
 R = 0.2
@@ -106,3 +110,5 @@ else:
     plt.title("Evolution of tau over time")
     plt.xlabel("time")
     plt.savefig("tau_evolution.png")
+
+print("End of training, two images have been plotted in the current directory")
