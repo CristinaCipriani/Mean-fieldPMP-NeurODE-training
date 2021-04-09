@@ -29,8 +29,7 @@ Both functions output at each step of every iteration the resolution of the forw
 
 First Output             |  Second Output
 :-------------------------:|:-------------------------:
-![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG)  |  
-![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG)
+![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG)  |  ![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG)
 
 >📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
 
