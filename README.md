@@ -27,7 +27,9 @@ python bidimensional.py --mu_0 bigaussian -- bias True --lambda 0.1 --dt 0.1 --i
 
 Both functions output at each step of every iteration the resolution of the forward and backward equation, and also the one of the parameter update. Automaticallay, plots of these functions are generated, but are not saved. While, at the end of the final iteration, two plots are saved in the current directory in .png format. One is the one below that represents the movement of the particles, and the other one contains the evolution of the control parameter in time.
 
-![alt text](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG?raw=true)
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG?raw=true)  |  ![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/bimodal_evolution.PNG?raw=true)
 
 >📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
 
