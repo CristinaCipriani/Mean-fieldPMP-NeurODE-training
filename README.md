@@ -4,6 +4,12 @@ This repository is the official implementation of [A Measure Theoretical Approac
 
 >📋  Our theoretical approach leads to a training algorithm for NeurODE which consists of a shooting method to solve the optimality conditions, namely a forward equation, a backward one, and then an equation for the update of the control parameter, i.e. the weights of the layers of the network.
 
+The authors are the following:
+* Benoît Bonnet (Institut de Mathématiques de Jussieu – Paris Rive Gauche)
+* Cristina Cipriani (Techincal University of Munich)
+* Massimo Fornasier (Technical University of Munich)
+* Hui Huang (University of Calgary)
+
 ## Requirements
 
 This implementation makes use of standard Python packages such as numpy, scipy, sklearn, and matplotlib.
@@ -33,6 +39,8 @@ First Output             |  Second Output
 
 >📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
 
+## Acknowledgment
+All authors acknowledge the support of the DFG Project ”Identification of Energies from Observation of Evolutions” and the DFG SPP 1962 ”Non-smooth and Complementarity-based Distributed Parameter Systems: Simulation and Hierarchical Optimization”. C.C. and M.F. acknowledge also the partial support of the project “Online Firestorms And Resentment Propagation On Social Media: Dynamics, Predictability and Mitigation” of the TUM Institute for Ethics in Artificial Intelligence.
 
 ## Citing
 
