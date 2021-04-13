@@ -76,7 +76,36 @@ if bias == False:
     # Running the algorithm
     theta, theta_trace = MFOC_nobias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
 
-    # Plotting the evolution of theta and saving it in the current directory (MISSING)
+    # Plotting the evolution of theta and saving it in the current directory
+    fig, axs = plt.subplots(theta.shape[1], theta.shape[2], figsize=(10,10))
+
+    for k in range(theta_trace.shape[0]):
+        axs[0,0].scatter(range(Nt-1), theta_trace[k,:,0,0], label="Iteration %s" %k)
+        axs[0,0].plot(range(Nt-1), theta_trace[k,:,0,0])
+        axs[0,0].set_xlabel("time")
+        axs[0,0].legend()
+        axs[0,0].set_title("Evolution of theta[0,0]")
+
+        axs[0,1].scatter(range(Nt-1), theta_trace[k,:,0,1], label="Iteration %s" %k)
+        axs[0,1].plot(range(Nt-1), theta_trace[k,:,0,1])
+        axs[0,1].set_xlabel("time")
+        axs[0,1].legend()
+        axs[0,1].set_title("Evolution of theta[0,1]")
+
+        axs[1,0].scatter(range(Nt-1), theta_trace[k,:,1,0], label="Iteration %s" %k)
+        axs[1,0].plot(range(Nt-1), theta_trace[k,:,1,0])
+        axs[1,0].set_xlabel("time")
+        axs[1,0].legend()
+        axs[1,0].set_title("Evolution of theta[1,0]")
+
+        axs[1,1].scatter(range(Nt-1), theta_trace[k,:,1,1], label="Iteration %s" %k)
+        axs[1,1].plot(range(Nt-1), theta_trace[k,:,1,1])
+        axs[1,1].set_xlabel("time")
+        axs[1,1].legend()
+        axs[1,1].set_title("Evolution of theta[1,1]")
+
+    fig.savefig("theta_evolution.png")
+    fig.show()
 
 else:
     # Setting the parameters needed for the case with bias
@@ -88,6 +117,47 @@ else:
     # Running the algorithm
     theta, theta_trace = MFOC_bias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
 
-    # Plotting the evolution of theta and saving it in the current directory (MISSING)
+    # Plotting the evolution of theta and saving it in the current directory
+    fig, axs = plt.subplots(theta.shape[1], theta.shape[2])
 
-print("End of training, one image has been saved in the current directory")
+    for k in range(theta_trace.shape[0]):
+        axs[0,0].scatter(range(Nt-1), theta_trace[k,:,0,0], label="Iteration %s" %k)
+        axs[0,0].plot(range(Nt-1), theta_trace[k,:,0,0])
+        axs[0,0].set_xlabel("time")
+        axs[0,0].legend()
+        axs[0,0].set_title("Evolution of omega[0,0]")
+
+        axs[0,1].scatter(range(Nt-1), theta_trace[k,:,0,1], label="Iteration %s" %k)
+        axs[0,1].plot(range(Nt-1), theta_trace[k,:,0,1])
+        axs[0,1].set_xlabel("time")
+        axs[0,1].legend()
+        axs[0,1].set_title("Evolution of omega[0,1]")
+
+        axs[1,0].scatter(range(Nt-1), theta_trace[k,:,1,0], label="Iteration %s" %k)
+        axs[1,0].plot(range(Nt-1), theta_trace[k,:,1,0])
+        axs[1,0].set_xlabel("time")
+        axs[1,0].legend()
+        axs[1,0].set_title("Evolution of omega[1,0]")
+
+        axs[1,1].scatter(range(Nt-1), theta_trace[k,:,1,1], label="Iteration %s" %k)
+        axs[1,1].plot(range(Nt-1), theta_trace[k,:,1,1])
+        axs[1,1].set_xlabel("time")
+        axs[1,1].legend()
+        axs[1,1].set_title("Evolution of omega[1,1]")
+
+        axs[0,2].scatter(range(Nt-1), theta_trace[k,:,0,2], label="Iteration %s" %k)
+        axs[0,2].plot(range(Nt-1), theta_trace[k,:,0,2])
+        axs[0,2].set_xlabel("time")
+        axs[0,2].legend()
+        axs[0,2].set_title("Evolution of sigma[0]")
+
+        axs[1,2].scatter(range(Nt-1), theta_trace[k,:,1,2], label="Iteration %s" %k)
+        axs[1,2].plot(range(Nt-1), theta_trace[k,:,1,2])
+        axs[1,2].set_xlabel("time")
+        axs[1,2].legend()
+        axs[1,2].set_title("Evolution of sigma[1]")
+
+    fig.savefig("theta_evolution.png")
+    fig.show()
+
+print("End of training, two images have been saved in the current directory")
