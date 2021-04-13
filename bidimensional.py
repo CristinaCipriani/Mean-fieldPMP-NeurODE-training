@@ -90,4 +90,4 @@ else:
 
     # Plotting the evolution of theta and saving it in the current directory (MISSING)
 
-print("End of training, two images have been plotted in the current directory")
+print("End of training, one image has been saved in the current directory")

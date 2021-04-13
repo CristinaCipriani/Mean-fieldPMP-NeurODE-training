@@ -80,10 +80,11 @@ if bias == False:
     for k in range(0,theta_trace.shape[0]):
         plt.scatter(range(Nt-1), theta_trace[k,:], label="Iteration %s" %k)
         plt.plot(range(Nt-1), theta_trace[k,:])
-    plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.legend()
     plt.title("Evolution of theta over time")
     plt.xlabel("time")
     plt.savefig("theta_evolution.png")
+    plt.show()
 
 else:
     # Setting the parameters needed for the case with bias
@@ -98,18 +99,21 @@ else:
     for k in range(0,theta_trace.shape[0]):
         plt.scatter(range(Nt-1), theta_trace[k,:,0], label="Iteration %s" %k)
         plt.plot(range(Nt-1), theta_trace[k,:,0])
-    plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.legend()
     plt.title("Evolution of W over time")
     plt.xlabel("time")
     plt.savefig("W_evolution.png")
+    plt.show()
 
     # Plotting the evolution of tau and saving it in the current directory
     for k in range(0,theta_trace.shape[0]):
         plt.scatter(range(Nt-1), theta_trace[k,:,1], label="Iteration %s" %k)
         plt.plot(range(Nt-1), theta_trace[k,:,1])
-    plt.legend(bbox_to_anchor=(1.05, 1))
+    #plt.legend(bbox_to_anchor=(1.05, 1))
+    plt.legend()
     plt.title("Evolution of tau over time")
     plt.xlabel("time")
     plt.savefig("tau_evolution.png")
+    plt.show()
 
-print("End of training, two images have been plotted in the current directory")
+print("End of training, two images have been saved in the current directory")
