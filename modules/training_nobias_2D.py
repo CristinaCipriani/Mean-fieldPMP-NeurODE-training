@@ -302,7 +302,14 @@ def root_function(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lamb
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
             count += 1
-
+            if Z_trace[n,i,2] >= 0:
+                f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
+            else:
+                f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
     double = False
     if double == False:
         f0_tot = 2*Lambda[0,0]*theta[n,0,0] + f[0,0]/N_particles
@@ -334,6 +341,16 @@ def root_function_00(theta_00, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
             f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
+        if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
+            count += 1
+            if Z_trace[n,i,2] >= 0:
+                f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
+            else:
+                f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
 
     double = False
     if double == False:
@@ -360,6 +377,16 @@ def root_function_01(theta_01, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
             f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
+        if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
+            count += 1
+            if Z_trace[n,i,2] >= 0:
+                f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
+            else:
+                f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
 
     double = False
     if double == False:
@@ -386,6 +413,16 @@ def root_function_10(theta_10, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
             f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
+        if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
+            count += 1
+            if Z_trace[n,i,2] >= 0:
+                f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
+            else:
+                f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
 
     double = False
     if double == False:
@@ -412,6 +449,16 @@ def root_function_11(theta_11, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
             f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
+        if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
+            count += 1
+            if Z_trace[n,i,2] >= 0:
+                f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
+            else:
+                f += ( spl_neg(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
+                       spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
+                       )
 
     double = False
     if double == False:
