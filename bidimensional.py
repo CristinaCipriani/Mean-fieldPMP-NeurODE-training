@@ -77,7 +77,7 @@ if bias == False:
     theta, theta_trace = MFOC_nobias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
 
     # Plotting the evolution of theta and saving it in the current directory
-    fig, axs = plt.subplots(theta.shape[1], theta.shape[2], figsize=(10,10))
+    fig, axs = plt.subplots(theta.shape[1], theta.shape[2], figsize=(15,10))
 
     for k in range(theta_trace.shape[0]):
         axs[0,0].scatter(range(Nt-1), theta_trace[k,:,0,0], label="Iteration %s" %k)
@@ -105,7 +105,7 @@ if bias == False:
         axs[1,1].set_title("Evolution of theta[1,1]")
 
     fig.savefig("theta_evolution.png")
-    fig.show()
+    #fig.show()
 
 else:
     # Setting the parameters needed for the case with bias
@@ -118,7 +118,7 @@ else:
     theta, theta_trace = MFOC_bias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
 
     # Plotting the evolution of theta and saving it in the current directory
-    fig, axs = plt.subplots(theta.shape[1], theta.shape[2])
+    fig, axs = plt.subplots(theta.shape[1], theta.shape[2], figsize=(15,10))
 
     for k in range(theta_trace.shape[0]):
         axs[0,0].scatter(range(Nt-1), theta_trace[k,:,0,0], label="Iteration %s" %k)
