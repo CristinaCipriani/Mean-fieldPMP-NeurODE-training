@@ -251,7 +251,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, der_theta_F1, der_theta_F2, t
     # Resolution of equation for the update of the parameter
     d = theta.shape[1]
     theta_new = np.zeros((Nt-1,d,d))
-    count = 0
+    counts = 0
     N_particles = Z_trace.shape[1]
 
     for n in range(0, Nt-1):
@@ -270,7 +270,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, der_theta_F1, der_theta_F2, t
         sol3 = optimize.brentq(root_function_11, -500, 500, args=(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lambda, theta, n))
         theta_new[n,1,1] = sol3
 
-        count += root_function(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lambda, theta_new, n)[4]
+        counts += root_function(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lambda, theta_new, n)[4]
 
     # Calculating the loss function
     loss_fct = 0
@@ -280,12 +280,12 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, der_theta_F1, der_theta_F2, t
                      +Lambda[1,0] * np.linalg.norm(theta[:,1,0])**2 + Lambda[1,1]*np.linalg.norm(theta[:,1,1])**2)
                      )
 
-    return theta_new, count, loss_fct
+    return theta_new, counts, loss_fct
 
 def root_function(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lambda, theta, n):
     N_particles = Z_trace.shape[1]
     d = theta.shape[1]
-    count = 0
+    c = 0
     f = np.zeros((d,d))
     f_prime = np.zeros((d,d))
 
@@ -301,8 +301,9 @@ def root_function(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lamb
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
-            count += 1
-            if Z_trace[n,i,2] >= 0:
+            c += 1
+            if x_i[0] > 0:
+            #if Z_trace[n,i,2] >= 0:
                 f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                        spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                        )
@@ -322,7 +323,7 @@ def root_function(Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lamb
         f2_tot = 2*Lambda[1,0]*theta[n,1,0] + 2 * f[1,0]/N_particles
         f3_tot = 2*Lambda[1,1]*theta[n,1,1] + 2 * f[1,1]/N_particles
 
-    return f0_tot, f1_tot, f2_tot, f3_tot, count
+    return f0_tot, f1_tot, f2_tot, f3_tot, c
 
 def root_function_00(theta_00, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_theta_F2, Lambda, theta, n):
     theta[n,0,0] = theta_00
@@ -342,8 +343,8 @@ def root_function_00(theta_00, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
-            count += 1
-            if Z_trace[n,i,2] >= 0:
+            if x_i[0] > 0:
+            #if Z_trace[n,i,2] >= 0:
                 f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                        spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                        )
@@ -378,8 +379,8 @@ def root_function_01(theta_01, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
-            count += 1
-            if Z_trace[n,i,2] >= 0:
+            if x_i[0] > 0:
+            #if Z_trace[n,i,2] >= 0:
                 f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                        spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                        )
@@ -414,8 +415,8 @@ def root_function_10(theta_10, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
-            count += 1
-            if Z_trace[n,i,2] >= 0:
+            if x_i[0] > 0:
+            #if Z_trace[n,i,2] >= 0:
                 f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                        spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                        )
@@ -450,8 +451,8 @@ def root_function_11(theta_11, Z_trace, g, spl_neg, spl_pos, der_theta_F1, der_t
                    spl_neg(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
-            count += 1
-            if Z_trace[n,i,2] >= 0:
+            if x_i[0] > 0:
+            #if Z_trace[n,i,2] >= 0:
                 f += ( spl_pos(x_i[0], x_i[1], dx=1) * der_theta_F1(n, x_i[0], x_i[1], theta) +
                        spl_pos(x_i[0], x_i[1], dy=1) * der_theta_F2(n, x_i[0], x_i[1], theta)
                        )

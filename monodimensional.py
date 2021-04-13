@@ -95,25 +95,22 @@ else:
     # Running the algorithm
     theta, theta_trace = MFOC_bias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations, plot_steps)
 
-    # Plotting the evolution of W and saving it in the current directory
-    for k in range(0,theta_trace.shape[0]):
-        plt.scatter(range(Nt-1), theta_trace[k,:,0], label="Iteration %s" %k)
-        plt.plot(range(Nt-1), theta_trace[k,:,0])
-    plt.legend()
-    plt.title("Evolution of W over time")
-    plt.xlabel("time")
-    plt.savefig("W_evolution.png")
-    plt.show()
+    # Plotting the evolution of theta and saving it in the current directory
+    fig, axs = plt.subplots(theta.shape[1], theta.shape[2], figsize=(10,5))
 
-    # Plotting the evolution of tau and saving it in the current directory
-    for k in range(0,theta_trace.shape[0]):
-        plt.scatter(range(Nt-1), theta_trace[k,:,1], label="Iteration %s" %k)
-        plt.plot(range(Nt-1), theta_trace[k,:,1])
-    #plt.legend(bbox_to_anchor=(1.05, 1))
-    plt.legend()
-    plt.title("Evolution of tau over time")
-    plt.xlabel("time")
-    plt.savefig("tau_evolution.png")
-    plt.show()
+    for k in range(theta_trace.shape[0]):
+        axs[0].scatter(range(Nt-1), theta_trace[k,:,0], label="Iteration %s" %k)
+        axs[0].plot(range(Nt-1), theta_trace[k,:,0])
+        axs[0].legend()
+        axs[0].set_xlabel("time")
+        axs[0].set_title("Evolution of W over time")
+
+        axs[1].scatter(range(Nt-1), theta_trace[k,:,1], label="Iteration %s" %k)
+        axs[1].plot(range(Nt-1), theta_trace[k,:,1])
+        axs[1].legend()
+        axs[1].set_title("Evolution of tau over time")
+        axs[1].set_xlabel("time")
+    fig.savefig("theta_evolution.png")
+    fig.show()
 
 print("End of training, two images have been saved in the current directory")

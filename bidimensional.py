@@ -69,7 +69,7 @@ def F_bias(x, theta):
 
 if bias == False:
     # Setting the parameters needed for the case without bias
-    theta = 5*np.ones((Nt-1,d,d))
+    theta = np.ones((Nt-1,d,d))
     F = F_nobias
     Lambda = lbd*np.ones((d,d))
 
@@ -125,37 +125,37 @@ else:
         axs[0,0].plot(range(Nt-1), theta_trace[k,:,0,0])
         axs[0,0].set_xlabel("time")
         axs[0,0].legend()
-        axs[0,0].set_title("Evolution of omega[0,0]")
+        axs[0,0].set_title("Evolution of W[0,0]")
 
         axs[0,1].scatter(range(Nt-1), theta_trace[k,:,0,1], label="Iteration %s" %k)
         axs[0,1].plot(range(Nt-1), theta_trace[k,:,0,1])
         axs[0,1].set_xlabel("time")
         axs[0,1].legend()
-        axs[0,1].set_title("Evolution of omega[0,1]")
+        axs[0,1].set_title("Evolution of W[0,1]")
 
         axs[1,0].scatter(range(Nt-1), theta_trace[k,:,1,0], label="Iteration %s" %k)
         axs[1,0].plot(range(Nt-1), theta_trace[k,:,1,0])
         axs[1,0].set_xlabel("time")
         axs[1,0].legend()
-        axs[1,0].set_title("Evolution of omega[1,0]")
+        axs[1,0].set_title("Evolution of W[1,0]")
 
         axs[1,1].scatter(range(Nt-1), theta_trace[k,:,1,1], label="Iteration %s" %k)
         axs[1,1].plot(range(Nt-1), theta_trace[k,:,1,1])
         axs[1,1].set_xlabel("time")
         axs[1,1].legend()
-        axs[1,1].set_title("Evolution of omega[1,1]")
+        axs[1,1].set_title("Evolution of W[1,1]")
 
         axs[0,2].scatter(range(Nt-1), theta_trace[k,:,0,2], label="Iteration %s" %k)
         axs[0,2].plot(range(Nt-1), theta_trace[k,:,0,2])
         axs[0,2].set_xlabel("time")
         axs[0,2].legend()
-        axs[0,2].set_title("Evolution of sigma[0]")
+        axs[0,2].set_title("Evolution of tau[0]")
 
         axs[1,2].scatter(range(Nt-1), theta_trace[k,:,1,2], label="Iteration %s" %k)
         axs[1,2].plot(range(Nt-1), theta_trace[k,:,1,2])
         axs[1,2].set_xlabel("time")
         axs[1,2].legend()
-        axs[1,2].set_title("Evolution of sigma[1]")
+        axs[1,2].set_title("Evolution of tau[1]")
 
     fig.savefig("theta_evolution.png")
     fig.show()
