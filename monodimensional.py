@@ -43,6 +43,7 @@ print("dt is %s, hence the networks has %s layers" %(dt, Nt))
 xmin = -7
 xmax = 7
 grid_points = 141
+plot_steps = False
 
 #Initial distribution
 R = 0.2
@@ -73,7 +74,7 @@ if bias == False:
     Lambda = lbd
 
     # Running the algorithm
-    theta, theta_trace = MFOC_nobias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
+    theta, theta_trace = MFOC_nobias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations, plot_steps)
 
     # Plotting the evolution of theta and saving it in the current directory
     for k in range(0,theta_trace.shape[0]):
@@ -91,7 +92,7 @@ else:
     Lambda = [lbd,1]
 
     # Running the algorithm
-    theta, theta_trace = MFOC_bias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations)
+    theta, theta_trace = MFOC_bias(N_points, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations, plot_steps)
 
     # Plotting the evolution of W and saving it in the current directory
     for k in range(0,theta_trace.shape[0]):

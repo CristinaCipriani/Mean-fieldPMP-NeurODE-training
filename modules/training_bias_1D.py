@@ -320,11 +320,11 @@ def root_function(Z_trace, g, spl_neg, spl_pos, F, Lambda, theta, mid_point, n):
 
     return f0_tot, f1_tot, f0_prime_tot, f1_prime_tot, count
 
-def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations):
+def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations, plot_steps):
     # Decide if I'm going to plot the dynamics at each time step or not
-    if dt < 0.05:
+    if dt < 0.05 or plot_steps == False:
         dynamics_plots = False
-        print("Not printing the dynamics at each time step because dt is too small and the plots would be too messy!")
+        print("Not printing the dynamics at each time step because dt is too small or because it was chosen by the user")
     else:
         dynamics_plots = True
 

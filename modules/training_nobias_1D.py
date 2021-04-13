@@ -234,11 +234,11 @@ def root_function_th(theta_n, Z_trace, g, spl_neg, spl_pos, F, Lambda, Nt, d, n)
 
     return f_tot
 
-def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations):
+def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin, xmax, grid_points, theta, F, mid_point, Lambda, num_iterations, plot_steps):
     # Decide if I'm going to plot the dynamics at each time step or not
-    if dt < 0.05:
+    if dt < 0.05 or plot_steps == False:
         dynamics_plots = False
-        print("Not printing the dynamics at each time step because dt is too small and the plots would be too messy!")
+        print("Not printing the dynamics at each time step because dt is too small or because it was chosen by the user")
     else:
         dynamics_plots = True
 
@@ -306,7 +306,7 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
         thetas[k+1,:] = theta.T
 
     plt.figure()
-    Z_trace, g= move_forward(dt, Nt, N, Z_all, F, thetas[-1,:].reshape(thetas.shape[1],1), mid_point, y_left, y_right, xmin, xmax)
+    Z_trace, g = move_forward(dt, Nt, N, Z_all, F, thetas[-1,:].reshape(thetas.shape[1],1), mid_point, y_left, y_right, xmin, xmax)
     plt.scatter(Z_trace[0,:, 0], np.zeros(2*N),c='red',label='Moving points')
     plt.scatter(Z_trace[0,:, 1], np.zeros(2*N),c='green',label='Labels')
     for n in range(1,Nt-1):
