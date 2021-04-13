@@ -259,7 +259,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, der_omega_F1, der_omega_F2, d
     # Resolution of equation for the update of the parameter
     d = theta.shape[1]
     theta_new = np.zeros((Nt-1,d,d+1))
-    count = 0
+    counts = 0
     N_particles = Z_trace.shape[1]
 
     for n in range(0, Nt-1):
@@ -284,7 +284,7 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, der_omega_F1, der_omega_F2, d
         sol5 = optimize.brentq(root_function_12, -50, 50, args=(Z_trace, g, spl_neg, spl_pos, der_sigma_F1, der_sigma_F2, Lambda, theta, n))
         theta_new[n,1,2] = sol5
 
-        count += root_function(Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, der_sigma_F1, der_sigma_F2, Lambda, theta_new, n, printy = False)[4]
+        counts += root_function(Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, der_sigma_F1, der_sigma_F2, Lambda, theta_new, n)[6]
 
     # Calculating the loss function
     loss_fct = 0
@@ -295,12 +295,12 @@ def parameter_update(Z_trace, g, psi_pos, psi_neg, der_omega_F1, der_omega_F2, d
                      +Lambda[0,2] * np.linalg.norm(theta[:,0,2])**2 + Lambda[1,2] * np.linalg.norm(theta[:,0,2])**2)
                      )
 
-    return theta_new, count, loss_fct
+    return theta_new, counts, loss_fct
 
-def root_function(Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, der_sigma_F1, der_sigma_F2, Lambda, theta, n, printy):
+def root_function(Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, der_sigma_F1, der_sigma_F2, Lambda, theta, n):
     N_particles = Z_trace.shape[1]
     d = theta.shape[1]
-    count = 0
+    c = 0
     f0 = np.zeros((d,d))
     f1 = np.zeros((d,1))
 
@@ -323,7 +323,7 @@ def root_function(Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, der_
                    spl_neg(x_i[0], x_i[1], dy=1) * der_sigma_F2(n, x_i[0], x_i[1], theta)
                    )
         if Z_trace[n,i,2] != g[n,i,0] or Z_trace[n,i,3] != g[n,i,1] :
-            count += 1
+            c += 1
 
     double = False
     if double == False:
@@ -341,7 +341,7 @@ def root_function(Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, der_
         f4_tot = 2*Lambda[0,2]*theta[n,0,2] + 2 * f1[0]/N_particles
         f5_tot = 2*Lambda[1,2]*theta[n,1,2] + 2 * f1[1]/N_particles
 
-    return f0_tot, f1_tot, f2_tot, f3_tot, f4_tot, f5_tot, count
+    return f0_tot, f1_tot, f2_tot, f3_tot, f4_tot, f5_tot, c
 
 def root_function_00(theta_00, Z_trace, g, spl_neg, spl_pos, der_omega_F1, der_omega_F2, Lambda, theta, n):
     theta[n,0,0] = theta_00
@@ -556,7 +556,7 @@ def MFOC(N, d, T, dt, R, mu_0, center_left, center_right, y_left, y_right, xmin,
     plt.title("Plot of the points moving over time")
     plt.savefig("Particles_movement.png")
     plt.show()
-    
+
     print("The loss fuction has value:")
     print(loss_fct)
 
