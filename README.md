@@ -43,4 +43,4 @@ All authors acknowledge the support of the DFG Project ”Identification of Ener
 ## Citing
 
 >📋 To cite the paper, use the following:
-A Measure Theoretical Approach to the Mean-Field Maximum Principle for Training NeurODEs _B. Bonnet, C. Cipriani, H. Huang and M. Fornasier_, Submitted (2021)
+A Measure Theoretical Approach to the Mean-Field Maximum Principle for Training NeurODEs _B. Bonnet, C. Cipriani, M. Fornasier and H. Huang_, Submitted (2021)
