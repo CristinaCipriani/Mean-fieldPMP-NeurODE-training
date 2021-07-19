@@ -1,11 +1,11 @@
 # A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE
 
-This repository is the official implementation of [A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE](https://arxiv.org/). 
+This repository contains the official implementation of [A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE](https://arxiv.org/). 
 
->📋  Our theoretical approach leads to a training algorithm for NeurODE which consists of a shooting method to solve the optimality conditions, namely a forward equation, a backward one, and then an equation for the update of the control parameter, i.e. the weights of the layers of the network.
+>📋  Our measure theoretical approach leads to a novel method for training NeurODEs which consists on the resolution of the first optimality conditions via a shooting method. Hence, the training reduces to repeatedly solving a forward equation, a backward one, and then an equation for the update of the control parameter, i.e. the weights of the layers of the network. More details can be found in Section 4.1 of the paper.
 
 The authors are the following:
-* **Benoît Bonnet** _(Institut de Mathématiques de Jussieu – Paris Rive Gauche, Paris, France)_ ?
+* **Benoît Bonnet** _(Inria Paris and Laboratoire Jacques-Louis Lions, Sorbonne Université & Université Paris-Diderot SPC, CNRS, Inria, 75005 Paris, France)_ 
 * **Cristina Cipriani** _(Technical University Munich, Department of Mathematics & Munich Data Science Institute, Munich, Germany)_
 * **Massimo Fornasier** _(Technical University Munich, Department of Mathematics & Munich Data Science Institute, Munich, Germany)_
 * **Hui Huang** _(University of Calgary, Department of Mathematics and Statistics, Calgary, Canada)_
@@ -27,7 +27,7 @@ While in the bidimensional case, the command to run is the following:
 python bidimensional.py --mu_0 bigaussian -- bias False --lambda 0.1 --dt 0.1 --iterations 8
 ```
 
->📋  Entries: In both cases, the required parameter that the user needs to choose is _**'mu_0'**_ which indicates if the initial distribution of particles is a bimodal gaussian (indicated with the term 'bigaussian') or a unimodal distribution (chosen by typing 'gaussian'). The centers can't be chosen by the user, but can be modified in the code. Moreover, the parameter _**'bias'**_ indicates if there's a bias term in the activation functions of the network. This is set by default to 'False', i.e. no bias. The other parameters that the user has the possibility to choose are _**'dt'**_, _**'lambda'**_, and _**'iterations'**_. In Section 5.1 of the paper, it's explained how interesting is to play around with these parameters and see how they influence the final result.  
+>📋  Entries: In both cases, the required parameter that the user needs to choose is _**'mu_0'**_ which indicates if the initial distribution of particles is a bimodal gaussian (indicated with the term 'bigaussian') or a unimodal distribution (chosen by typing 'gaussian'). The centers can't be chosen by the user, but can be modified in the code. Moreover, the parameter _**'bias'**_ indicates if there's a bias term in the activation functions of the network. This is set by default to 'False', i.e. no bias. The other parameters that the user has the possibility to choose are _**'dt'**_, _**'lambda'**_, and _**'iterations'**_. Section 4.2 of the paper shows how interesting is to play around with these parameters and see how they influence the final result.  
 
 ## Results
 
@@ -43,3 +43,4 @@ All authors acknowledge the support of the DFG Project ”Identification of Ener
 ## Citing
 
 >📋 To cite the paper, use the following:
+A Measure Theoretical Approach to the Mean-Field Maximum Principle for Training NeurODEs _(B. Bonnet, C. Cipriani, H. Huang and M. Fornasier)_, Submitted (2021)
