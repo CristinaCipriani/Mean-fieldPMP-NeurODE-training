@@ -1,6 +1,6 @@
-# A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE
+# A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODEs
 
-This repository contains the official implementation of [A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODE](https://arxiv.org/). 
+This repository contains the official implementation of [A Measure Theoretical Approach to the Mean-field Maximum Principle for Training NeurODEs](https://arxiv.org/). 
 
 >📋  Our measure theoretical approach leads to a novel method for training NeurODEs which consists on the resolution of the first optimality conditions via a shooting method. Hence, the training reduces to repeatedly solving a forward equation, a backward one, and then an equation for the update of the control parameter, i.e. the weights of the layers of the network. More details can be found in Section 4.1 of the paper.
 
@@ -43,4 +43,4 @@ All authors acknowledge the support of the DFG Project ”Identification of Ener
 ## Citing
 
 >📋 To cite the paper, use the following:
-A Measure Theoretical Approach to the Mean-Field Maximum Principle for Training NeurODEs _(B. Bonnet, C. Cipriani, H. Huang and M. Fornasier)_, Submitted (2021)
+A Measure Theoretical Approach to the Mean-Field Maximum Principle for Training NeurODEs _B. Bonnet, C. Cipriani, H. Huang and M. Fornasier_, Submitted (2021)
