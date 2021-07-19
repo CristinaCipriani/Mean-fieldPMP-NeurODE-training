@@ -37,7 +37,7 @@ First Output             |  Second Output
 :-------------------------:|:-------------------------:
 ![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/images/bimodal_evolution.PNG)  |  ![](https://github.com/CristinaCipriani/Mean-fieldPMP-NeurODE-training/blob/main/images/evolution_theta_from_zeros.png)
 
-## Acknowledgment
+## Acknowledgments
 All authors acknowledge the support of the DFG Project ”Identification of Energies from Observation of Evolutions” and the DFG SPP 1962 ”Non-smooth and Complementarity-based Distributed Parameter Systems: Simulation and Hierarchical Optimization”. C.C. and M.F. acknowledge also the partial support of the project “Online Firestorms And Resentment Propagation On Social Media: Dynamics, Predictability and Mitigation” of the TUM Institute for Ethics in Artificial Intelligence.
 
 ## Citing
